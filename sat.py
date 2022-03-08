@@ -1,7 +1,5 @@
 import sys
 
-from sqlalchemy import false
-
 def main():
     inFile = open("cnf.cnf", "r")
     allLines = inFile.readlines()
@@ -45,16 +43,24 @@ def output_var(cnf):
 
 def unit_clause(cnf):
     units = []
+    pos = []
+    neg = []
     for x in cnf: # each line
         if len(x) == 1:
             units.append(x[0])
-    print(units)
-    
-    return cnf
+    for u in units:
+        if u < 0: neg.append(u)
+        else: pos.append(u)
+        cnf = [x for x in cnf if u not in x] # remove satisfied clauses from array
+        # remove unsat literal from clauses
+        for x in cnf:
+            if -u in x:
+                x.remove(-u)
+    return cnf, pos, neg
 
 def dpll(cnf):
-    cnf = unit_clause(cnf)
-    # print(cnf)
+    cnf, pos, neg = unit_clause(cnf)
+    print(cnf, pos, neg)
 
 
 
