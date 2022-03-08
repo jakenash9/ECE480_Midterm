@@ -35,12 +35,12 @@ def main():
 #     print(cnf_small[0])
 
     
-# define the output of the cnf
-def output_var(cnf):
-    first = cnf[1]
-    out = first[0]
-    print(out)
-    return out
+# # define the output of the cnf
+# def output_var(cnf):
+#     first = cnf[1]
+#     out = first[0]
+#     print(out)
+#     return out
 
 def unit_clause(cnf):
     units = []
@@ -99,6 +99,8 @@ def dpll(cnf):
     if len(cnf) == 0: return True
     for x in cnf:
         if len(x) == 0 : return False
+
+    
 
 
 
