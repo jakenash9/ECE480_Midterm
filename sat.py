@@ -1,10 +1,10 @@
 import sys
 import copy
-
+import numpy as np
 
 def main():
     # read input from cnf.cnf
-    inFile = open("cnf.cnf", "r")
+    inFile = open("unsat2.cnf", "r")
     # Array of cnf lines
     allLines = inFile.readlines()
     # initializing variables
@@ -143,20 +143,20 @@ def dpll(cnf):
     if temp:
         print(pos)
         print(true,"ASDFASDFASD")
-        for i in pos:
+        for i in np.unique(pos):
             print(i)
-            if i in true: 
-                true.remove(i)
-                print(true, "TRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUE")
+            true.remove(i)
+            print(true, "TRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUE")
         print(neg)
         print(false, "POOOOOOOOOOOOOP")
-        for i in neg:
-            if i in false:
-                false.remove(i)
-                print(false,"ihihihihihihihih") 
+        for i in np.unique(neg):
+            false.remove(i)
+            print(false,"ihihihihihihihih")
+        print("ARE YOU EVEN GETTING HERE??????????????")
         return False
     posCopy = copy.deepcopy(cnf)
     negCopy = copy.deepcopy(cnf)
+    print(posCopy, "ughhhagugughghghghghghgugh")
     posCopy.append([newLit[0]])
     negCopy.append([-newLit[0]])
     if dpll(posCopy):
@@ -164,11 +164,11 @@ def dpll(cnf):
     elif dpll(negCopy):
         return False
     else: 
-        
-        for i in pos:
-            true.remove(i)
-        for i in neg:
-            false.remove(i)
+        print(neg, false)
+        for i in np.unique(pos):
+                true.remove(i)
+        for i in np.unique(neg):
+                false.remove(i)
         return False
 
 
