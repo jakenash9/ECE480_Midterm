@@ -6,10 +6,11 @@ def main():
     inFile = open("cnf.cnf", "r")
     # Array of cnf lines
     allLines = inFile.readlines()
+    # initializing variables
     clauses = 0
     variables = 0
     # define empty arrays
-    cnf = [] # cnf array
+    cnf = [] # array of arrays of clauses
     global true, false
     true = [] # array of true values
     false = [] # array of false values
@@ -21,29 +22,16 @@ def main():
             variables = int(temp[2]) # number of variables
             clauses = int(temp[3]) # number or clauses
         else:
-            temp = x[:len(x)-2].split()
-            # print(temp)
+            temp = x[:len(x)-2].split() # temperary arrays of each clause
+            # parse each literal and add to cnf array
             for t in range(len(temp)):
                 temp[t]=int(temp[t])
             cnf.append(temp)
-    # print(clauses, variables)
-    print(cnf)
-    dpll(cnf)
-#    with open('cnf.cnf') as f:
-#     cnf = f.readlines()
-#     # print(cnf)
-#     output_var(cnf)
-#     cnf_small = cnf[2:]
-#     unit_clause(cnf_small)
-#     print(cnf_small[0])
 
-    
-# # define the output of the cnf
-# def output_var(cnf):
-#     first = cnf[1]
-#     out = first[0]
-#     print(out)
-#     return out
+    print(cnf) # print cnf array
+
+    dpll(cnf) # call dpll algorithm
+
 
 def unit_clause(cnf):
     units = []
