@@ -4,7 +4,7 @@ import copy
 
 def main():
     # read input from cnf.cnf
-    inFile = open("unsat1.cnf", "r")
+    inFile = open("sat1.cnf", "r")
     # Array of cnf lines
     allLines = inFile.readlines()
     # initializing variables
@@ -35,7 +35,7 @@ def main():
     print("---------------------------------")
     print()
 
-    satOut = dpll(cnf)# call dpll algorithm
+    satOut = dpll(cnf) # call dpll algorithm
     if satOut == True:
         print("SAT")
     else:
@@ -43,7 +43,6 @@ def main():
 
 # unit propagation clause - based on sudo code from DPLL Wikipedia
 def unit_clause(cnf):
-    print(cnf)
     # define arrays
     units = []
     pos = []
@@ -120,6 +119,7 @@ def dpll(cnf):
 
     # send cnf, pos, and neg arrays through pure literal elimination
     cnf, pos, neg = pure(cnf, pos, neg)
+    print(pos, "pppppppppp")
 
     # print cnf, positive satisfied literals, and negative satisfied literals after pure
     print("CNF (NO PURE LITERALS), TRUE LITERALS, FALSE LITERALS")
@@ -141,10 +141,16 @@ def dpll(cnf):
                     newLit.append(abs(k))
     newLit = sorted(newLit) # sort the list from smallest to largest literal
     if temp:
+        print(pos)
+        print(true,"ASDFASDFASD")
         for i in pos:
             true.remove(i)
+            print(true, "TRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUE")
+        print(neg)
+        print(false, "POOOOOOOOOOOOOP")
         for i in neg:
-            false.remove(i)
+                false.remove(i)
+                print(false,"ihihihihihihihih") 
         return False
     posCopy = copy.deepcopy(cnf)
     negCopy = copy.deepcopy(cnf)
@@ -155,6 +161,7 @@ def dpll(cnf):
     elif dpll(negCopy):
         return False
     else: 
+        
         for i in pos:
             true.remove(i)
         for i in neg:
