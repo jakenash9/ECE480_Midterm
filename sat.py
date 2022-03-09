@@ -1,5 +1,6 @@
 import sys
-# from tkinter.messagebox import NO
+import copy
+
 
 def main():
     # read input from cnf.cnf
@@ -122,11 +123,45 @@ def dpll(cnf):
     print("---------------------------------")
     print()
 
-    
+    newLit = []
     if len(cnf) == 0: return True # if cnf is empty return true
+    null = False
     # if an empty clause is found return false 
     for x in cnf:
-        if len(x) == 0 : return False
+        if len(x) == 0 : null = True
+        else: 
+            for k in x: # each literal in cnf
+                # add absolute value of each literal to a new array
+                if abs(k) not in newLit:
+                    newLit.append(abs(k))
+    newLit = sorted(newLit) # sort the list from smallest to largest literal
+    if null:
+        for i in pos:
+            true.remove(i)
+        for i in neg:
+            false.remove(i)
+        return False
+    posCopy = copy.deepcopy(cnf)
+    negCopy = copy.deepcopy(cnf)
+    print(posCopy, "posssssssssssssssssssssssss")
+    print(negCopy, "negggggggggggggggggggggggg")
+    # posCopy.append(newLit[0])
+    # negCopy.append(-newLit[0])
+    # if dpll(posCopy):
+    #     return True
+    # elif dpll(negCopy):
+    #     return False
+    # else: 
+    #     for i in pos:
+    #         true.remove(i)
+    #     for i in neg:
+    #         false.remove(i)
+    #     return False
+
+
+    
+
+
 
     
 
