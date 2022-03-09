@@ -27,9 +27,12 @@ def main():
             for t in range(len(temp)):
                 temp[t]=int(temp[t])
             cnf.append(temp)
-
-    print(cnf) # print cnf array
-    print("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
+    # print inputted cnf array 
+    print("CONJUNCTIVE NORMAL FORM ARRAY")
+    print("---------------------------------")
+    print(cnf) 
+    print("---------------------------------")
+    print()
 
     dpll(cnf) # call dpll algorithm
 
@@ -101,18 +104,27 @@ def dpll(cnf):
 
     # send cnf array through unit propagation clause 
     cnf, pos, neg = unit_clause(cnf)
+
     # print cnf, positive unit literals, and negative unit literals after unit_clause
+    print("CNF (NO UNIT CLAUSES), POS UNIT CLAUSES, NEG UNIT CLAUSES")
+    print("---------------------------------")
     print(cnf, pos, neg)
+    print("---------------------------------")
     print()
 
     # send cnf, pos, and neg arrays through pure literal elimination
     cnf, pos, neg = pure(cnf, pos, neg)
+
     # print cnf, positive satisfied literals, and negative satisfied literals after pure
-    print(cnf)
-    print(true, false)
+    print("CNF (NO PURE LITERALS), TRUE LITERALS, FALSE LITERALS")
+    print("---------------------------------")
+    print(cnf, true, false)
+    print("---------------------------------")
+    print()
 
     
-    if len(cnf) == 0: return True
+    if len(cnf) == 0: return True # if cnf is empty return true
+    # if an empty clause is found return false 
     for x in cnf:
         if len(x) == 0 : return False
 
