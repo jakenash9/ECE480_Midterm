@@ -4,7 +4,7 @@ import numpy as np
 
 def main():
     # read input from cnf.cnf
-    inFile = open("unsat2.cnf", "r")
+    inFile = open("sat3.cnf", "r")
     # Array of cnf lines
     allLines = inFile.readlines()
     # initializing variables
