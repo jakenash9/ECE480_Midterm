@@ -4,7 +4,7 @@ import copy
 
 def main():
     # read input from cnf.cnf
-    inFile = open("sat1.cnf", "r")
+    inFile = open("cnf.cnf", "r")
     # Array of cnf lines
     allLines = inFile.readlines()
     # initializing variables
@@ -144,11 +144,14 @@ def dpll(cnf):
         print(pos)
         print(true,"ASDFASDFASD")
         for i in pos:
-            true.remove(i)
-            print(true, "TRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUE")
+            print(i)
+            if i in true: 
+                true.remove(i)
+                print(true, "TRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUE")
         print(neg)
         print(false, "POOOOOOOOOOOOOP")
         for i in neg:
+            if i in false:
                 false.remove(i)
                 print(false,"ihihihihihihihih") 
         return False
