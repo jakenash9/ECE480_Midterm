@@ -4,7 +4,7 @@ import copy
 
 def main():
     # read input from cnf.cnf
-    inFile = open("cnf.cnf", "r")
+    inFile = open("unsat1.cnf", "r")
     # Array of cnf lines
     allLines = inFile.readlines()
     # initializing variables
@@ -56,11 +56,11 @@ def unit_clause(cnf):
         # if unit literal is negative, add to neg and false arrays
         if u < 0: 
             neg.append(u)
-            false.append(u)
+            if u not in false: false.append(u)
         # if unit literal is positive, add to pos and true arrays
         else: 
             pos.append(u)
-            true.append(u)
+            if u not in true: true.append(u)
         cnf = [x for x in cnf if u not in x] # remove SAT clauses from cnf array
         # remove UNSAT literal from clauses in cnf array
         for x in cnf:
@@ -161,17 +161,6 @@ def dpll(cnf):
             false.remove(i)
         return False
 
-
-    
-
-
-
-    
-
-
-
-
-    
 
 if __name__ == "__main__":
     main()
