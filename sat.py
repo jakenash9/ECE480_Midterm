@@ -17,9 +17,9 @@ def main():
         if x[0]=='c': # check for comment
             continue
         if x[0]=="p": # check for cnf header 
-            temp = x.split()
-            variables = int(temp[2])
-            clauses = int(temp[3])
+            temp = x.split() # split at pance
+            variables = int(temp[2]) # number of variables
+            clauses = int(temp[3]) # number or clauses
         else:
             temp = x[:len(x)-2].split()
             # print(temp)
