@@ -1,19 +1,22 @@
 import sys
-from tkinter.messagebox import NO
+# from tkinter.messagebox import NO
 
 def main():
+    # read input from cnf.cnf
     inFile = open("cnf.cnf", "r")
+    # Array of cnf lines
     allLines = inFile.readlines()
     clauses = 0
     variables = 0
-    cnf = []
+    # define empty arrays
+    cnf = [] # cnf array
     global true, false
-    true = []
-    false = []
+    true = [] # array of true values
+    false = [] # array of false values
     for x in allLines:
-        if x[0]=='c':
+        if x[0]=='c': # check for comment
             continue
-        if x[0]=="p":
+        if x[0]=="p": # check for cnf header 
             temp = x.split()
             variables = int(temp[2])
             clauses = int(temp[3])
