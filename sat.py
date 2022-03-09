@@ -35,10 +35,15 @@ def main():
     print("---------------------------------")
     print()
 
-    dpll(cnf) # call dpll algorithm
+    satOut = dpll(cnf)# call dpll algorithm
+    if satOut == True:
+        print("SAT")
+    else:
+        print("UNSAT")
 
 # unit propagation clause - based on sudo code from DPLL Wikipedia
 def unit_clause(cnf):
+    print(cnf)
     # define arrays
     units = []
     pos = []
@@ -125,17 +130,17 @@ def dpll(cnf):
 
     newLit = []
     if len(cnf) == 0: return True # if cnf is empty return true
-    null = False
+    temp = False
     # if an empty clause is found return false 
     for x in cnf:
-        if len(x) == 0 : null = True
+        if len(x) == 0 : temp = True
         else: 
             for k in x: # each literal in cnf
                 # add absolute value of each literal to a new array
                 if abs(k) not in newLit:
                     newLit.append(abs(k))
     newLit = sorted(newLit) # sort the list from smallest to largest literal
-    if null:
+    if temp:
         for i in pos:
             true.remove(i)
         for i in neg:
@@ -143,20 +148,18 @@ def dpll(cnf):
         return False
     posCopy = copy.deepcopy(cnf)
     negCopy = copy.deepcopy(cnf)
-    print(posCopy, "posssssssssssssssssssssssss")
-    print(negCopy, "negggggggggggggggggggggggg")
-    # posCopy.append(newLit[0])
-    # negCopy.append(-newLit[0])
-    # if dpll(posCopy):
-    #     return True
-    # elif dpll(negCopy):
-    #     return False
-    # else: 
-    #     for i in pos:
-    #         true.remove(i)
-    #     for i in neg:
-    #         false.remove(i)
-    #     return False
+    posCopy.append([newLit[0]])
+    negCopy.append([-newLit[0]])
+    if dpll(posCopy):
+        return True
+    elif dpll(negCopy):
+        return False
+    else: 
+        for i in pos:
+            true.remove(i)
+        for i in neg:
+            false.remove(i)
+        return False
 
 
     
