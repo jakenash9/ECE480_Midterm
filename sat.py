@@ -53,7 +53,6 @@ def unit_clause(cnf):
             pos.append(u)
             true.append(u)
         cnf = [x for x in cnf if u not in x] # remove SAT clauses from cnf array
-        print(cnf, "doodooshat")
         # remove UNSAT literal from clauses in cnf array
         for x in cnf:
             if -u in x:
@@ -66,29 +65,36 @@ def pure(cnf, pos, neg):
     # define positive and negative arrays after unit clauses removed
     positive = [] # positive literals 
     negative = [] # negative literals
+
     for x in cnf: # each clause in cnf after disgarded unit clauses
         for q in x: # sort each literal into positive and negative arrayy
             if q > 0: positive.append(q)
             if q < 0: negative.append(q)
+
     # define pOnly and nOnly arrays
     pOnly = [] # literals that only appear positive
     nOnly = []  # literals that only appear negative
+
     for x in positive: # each positive literal
         # if a positive literal never appears negative, set to true and add to pOnly array
         if -x not in negative and x not in pOnly:
             true.append(x)
             pOnly.append(x)
-    for j in negative:
+    for j in negative: # each negative literal
+        # if a negative literal never appears positive, set to false and add to nOnly array
         if -j not in positive and j not in nOnly:
             false.append(j)
             nOnly.append(j)
-    # pos, neg = pos+pOnly, neg+nOnly
     temp = []
-    for i in range(len(cnf)):
-        for x in cnf[i]:
-            if x in pOnly+nOnly:
-                if cnf[i] not in temp: temp.append(cnf[i])
-    cnf = [x for x in cnf if x not in temp]
+    for i in range(len(cnf)): # for each clause - range allows for us to edit the array in this loop
+        for x in cnf[i]: # each literal
+            if x in pOnly+nOnly: # if literal only appears as positive or negative
+                # add clauses with literals from pOnly or nOnly to temperary array
+                if cnf[i] not in temp: 
+                    temp.append(cnf[i])
+
+    cnf = [x for x in cnf if x not in temp] # remove SAT clauses from cnf array
+    # return current cnf, positive satisifed literals, negative satisfied literals
     return cnf, pos+pOnly, neg+nOnly
 
 def dpll(cnf):
