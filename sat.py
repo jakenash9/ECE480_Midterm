@@ -98,12 +98,20 @@ def pure(cnf, pos, neg):
     return cnf, pos+pOnly, neg+nOnly
 
 def dpll(cnf):
+
+    # send cnf array through unit propagation clause 
     cnf, pos, neg = unit_clause(cnf)
+    # print cnf, positive unit literals, and negative unit literals after unit_clause
     print(cnf, pos, neg)
     print()
+
+    # send cnf, pos, and neg arrays through pure literal elimination
     cnf, pos, neg = pure(cnf, pos, neg)
+    # print cnf, positive satisfied literals, and negative satisfied literals after pure
     print(cnf)
     print(true, false)
+
+    
     if len(cnf) == 0: return True
     for x in cnf:
         if len(x) == 0 : return False
