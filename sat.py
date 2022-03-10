@@ -54,11 +54,11 @@ def unit_clause(cnf):
     for u in units: # each unit clause (standalone literal)
         # if unit literal is negative, add to neg and false arrays
         if u < 0: 
-            neg.append(u)
+            if u not in neg: neg.append(u)
             if u not in false: false.append(u)
         # if unit literal is positive, add to pos and true arrays
         else: 
-            pos.append(u)
+            if u not in pos: pos.append(u)
             if u not in true: true.append(u)
         cnf = [x for x in cnf if u not in x] # remove SAT clauses from cnf array
         # remove UNSAT literal from clauses in cnf array
@@ -141,17 +141,17 @@ def dpll(cnf):
                     newLit.append(abs(k))
     newLit = sorted(newLit) # sort the list from smallest to largest literal
     if temp:
-        print(pos)
+        # print(pos)
         # print(true,"ASDFASDFASD")
-        for i in np.unique(pos):
-            print(i)
+        for i in pos:
+            # print(i)
             true.remove(i)
             # print(true, "TRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUE")
-        print(neg)
+        # print(neg)
         # print(false, "POOOOOOOOOOOOOP")
-        for i in np.unique(neg):
+        for i in neg:
             false.remove(i)
-            print(false,"ihihihihihihihih")
+            # print(false,"ihihihihihihihih")
         # print("ARE YOU EVEN GETTING HERE??????????????")
         return False
     posCopy = copy.deepcopy(cnf)
