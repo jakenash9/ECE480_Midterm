@@ -119,7 +119,7 @@ def dpll(cnf):
 
     # send cnf, pos, and neg arrays through pure literal elimination
     cnf, pos, neg = pure(cnf, pos, neg)
-    print(pos, "pppppppppp")
+    # print(pos, "pppppppppp")
 
     # print cnf, positive satisfied literals, and negative satisfied literals after pure
     print("CNF (NO PURE LITERALS), TRUE LITERALS, FALSE LITERALS")
@@ -142,21 +142,21 @@ def dpll(cnf):
     newLit = sorted(newLit) # sort the list from smallest to largest literal
     if temp:
         print(pos)
-        print(true,"ASDFASDFASD")
+        # print(true,"ASDFASDFASD")
         for i in np.unique(pos):
             print(i)
             true.remove(i)
-            print(true, "TRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUE")
+            # print(true, "TRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUE")
         print(neg)
-        print(false, "POOOOOOOOOOOOOP")
+        # print(false, "POOOOOOOOOOOOOP")
         for i in np.unique(neg):
             false.remove(i)
             print(false,"ihihihihihihihih")
-        print("ARE YOU EVEN GETTING HERE??????????????")
+        # print("ARE YOU EVEN GETTING HERE??????????????")
         return False
     posCopy = copy.deepcopy(cnf)
     negCopy = copy.deepcopy(cnf)
-    print(posCopy, "ughhhagugughghghghghghgugh")
+    # print(posCopy, "ughhhagugughghghghghghgugh")
     posCopy.append([newLit[0]])
     negCopy.append([-newLit[0]])
     if dpll(posCopy):
