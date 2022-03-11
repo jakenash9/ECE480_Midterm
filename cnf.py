@@ -8,6 +8,7 @@ def main():
     print(f_or)
     print("------------------------")
     lits_array = [] # create new array for literals
+    output = []
     counter, lit = var_count(x)
 
 
@@ -24,10 +25,13 @@ def main():
         for k in j:
             # find not gate and call not_gate function
             if k[0] == "~":
-                print("poop")
-                # not_gate(k, )
+                print(k)
+                output.append(not_gate(k, "x" + str(counter)))
+                counter +=1
 
-
+    print(output, "OUT")
+    print(output[0])
+    print(not_gate("~x4", "x5"))
 
 def var_count(f):
     ors = f.split("+") # split by OR gates
