@@ -2,7 +2,6 @@ import sys
 import copy
 import numpy as np
 
-#POOOOOOOOP 
 def main():
     # read input from cnf.cnf
     inFile = open("cnf.cnf", "r")
