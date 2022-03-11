@@ -4,7 +4,7 @@ import numpy as np
 
 def main():
     # read input from cnf.cnf
-    inFile = open("sat3.cnf", "r")
+    inFile = open("unsat1.cnf", "r")
     # Array of cnf lines
     allLines = inFile.readlines()
     # initializing variables
@@ -13,8 +13,8 @@ def main():
     # define empty arrays
     cnf = [] # array of arrays of clauses
     global true, false
-    true = [] # array of true values
-    false = [] # array of false values
+    true = [] # global array of true values
+    false = [] # global array of false values
     for x in allLines:
         if x[0]=='c': # check for comment
             continue
@@ -44,9 +44,9 @@ def main():
 # unit propagation clause - based on sudo code from DPLL Wikipedia
 def unit_clause(cnf):
     # define arrays
-    units = []
-    pos = []
-    neg = []
+    units = [] # array of unit clauses
+    pos = [] # array of positive literals
+    neg = [] # array of negative literals
     for x in cnf: # each line in cnf.cnf
         # check if it is a unit clause and if so, add it to units array
         if len(x) == 1:
@@ -119,7 +119,6 @@ def dpll(cnf):
 
     # send cnf, pos, and neg arrays through pure literal elimination
     cnf, pos, neg = pure(cnf, pos, neg)
-    # print(pos, "pppppppppp")
 
     # print cnf, positive satisfied literals, and negative satisfied literals after pure
     print("CNF (NO PURE LITERALS), TRUE LITERALS, FALSE LITERALS")
@@ -129,9 +128,9 @@ def dpll(cnf):
     print()
 
     newLit = []
-    if len(cnf) == 0: return True # if cnf is empty return true
+    if len(cnf) == 0: return True # if cnf is empty return true (SAT)
     temp = False
-    # if an empty clause is found return false 
+    # if an empty clause is found set temp to True 
     for x in cnf:
         if len(x) == 0 : temp = True
         else: 
@@ -140,37 +139,39 @@ def dpll(cnf):
                 if abs(k) not in newLit:
                     newLit.append(abs(k))
     newLit = sorted(newLit) # sort the list from smallest to largest literal
+    
+    # if an empty clause is found...
     if temp:
-        # print(pos)
-        # print(true,"ASDFASDFASD")
-        for i in pos:
-            # print(i)
+        # remove all values in pos array from true array
+        for i in pos: 
             true.remove(i)
-            # print(true, "TRUUUUUUUUUUUUUUUUUUUUUUUUUUUUUE")
-        # print(neg)
-        # print(false, "POOOOOOOOOOOOOP")
+        # remove all values in neg array from false array
         for i in neg:
             false.remove(i)
-            # print(false,"ihihihihihihihih")
-        # print("ARE YOU EVEN GETTING HERE??????????????")
-        return False
+        return False # return false (UNSAT)
+
+    # allocate memory for two copies of current version of cnf array
     posCopy = copy.deepcopy(cnf)
     negCopy = copy.deepcopy(cnf)
-    # print(posCopy, "ughhhagugughghghghghghgugh")
+    # add lowest value of newLit to copies of current version of cnf (+ and -)
     posCopy.append([newLit[0]])
     negCopy.append([-newLit[0]])
-    if dpll(posCopy):
+
+
+    # recursive call with new appended cnfs 
+    if dpll(posCopy): # SATISFIABLE
         return True
-    elif dpll(negCopy):
+    elif dpll(negCopy): # UNSATISFIABLE
         return False
     else: 
-        print(neg, false)
+        # for each positive literal, remove from true array
         for i in np.unique(pos):
                 true.remove(i)
+        # for each negative literal, remove from false array 
         for i in np.unique(neg):
                 false.remove(i)
-        return False
+        return False # UNSATISFIABLE
 
-
+# main method run
 if __name__ == "__main__":
     main()
