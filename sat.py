@@ -4,7 +4,7 @@ import numpy as np
 
 def main():
     # read input from cnf.cnf
-    inFile = open("unsat1.cnf", "r")
+    inFile = open("cnf.cnf", "r")
     # Array of cnf lines
     allLines = inFile.readlines()
     # initializing variables
@@ -36,6 +36,7 @@ def main():
     print()
 
     satOut = dpll(cnf) # call dpll algorithm
+
     if satOut == True:
         print("SAT")
     else:
@@ -139,7 +140,7 @@ def dpll(cnf):
                 if abs(k) not in newLit:
                     newLit.append(abs(k))
     newLit = sorted(newLit) # sort the list from smallest to largest literal
-    
+
     # if an empty clause is found...
     if temp:
         # remove all values in pos array from true array
@@ -156,7 +157,6 @@ def dpll(cnf):
     # add lowest value of newLit to copies of current version of cnf (+ and -)
     posCopy.append([newLit[0]])
     negCopy.append([-newLit[0]])
-
 
     # recursive call with new appended cnfs 
     if dpll(posCopy): # SATISFIABLE
