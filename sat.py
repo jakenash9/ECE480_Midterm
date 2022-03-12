@@ -3,6 +3,48 @@ import copy
 import numpy as np
 
 def main():
+    # create an output file for all possible outcomes
+    temp = open("out.txt", "w")
+    temp.write("")
+    temp.close()
+    count = 0 # number of satisfied outputs
+    while True:
+        output = sat() # call sat methods
+        # if sat returns true, increase count
+        if output:
+            count +=1 # add to number of satisfied outputs
+            addStr = "" # inverted set of literals put into cnf
+            outStr = "" # satisfiable literals 
+            # for every value in the true array
+            for x in output[0]:
+                outStr += " "+str(x) # add to output string
+                addStr += " "+str(-x) # add inverted value to string appended to cnf
+            # for every value in the false array
+            for x in output[1]:
+                outStr += " "+str(x) # add to output string
+                addStr += " "+str(-x) # add inverted value to string appended to cnf
+            # add 0 to end of strings 
+            outStr += " 0\n"
+            addStr += " 0\n"
+
+            # out.cnf = output of cnf.py
+            temp = open("out.cnf", "a") # open 'out.cnf' for appending
+            temp.write(addStr[1:]) # append inverted string of SAT literals to 'out.cnf'
+            temp.close()
+
+            # out.txt = output of all possible solutions
+            temp = open("out.txt", "a") # open 'out.txt' for appending
+            temp.write(outStr[1:]) # append string of SAT literals to 'out.txt'
+            temp.close()
+
+        else:
+            # if no satisfied outputs are found, print "UNSAT" and return
+            if count==0:
+                print("UNSAT")
+            return
+
+
+def sat():
     # read input from cnf.cnf
     inFile = open("out.cnf", "r")
     # Array of cnf lines
@@ -40,8 +82,10 @@ def main():
         print("SAT")
         print("True Literals: " , true)
         print("False Literals: " , false)
+        print()
+        return true, false
     else:
-        print("UNSAT")
+        return False
 
 # unit propagation clause - based on sudo code from DPLL Wikipedia
 def unit_clause(cnf):
@@ -71,7 +115,6 @@ def unit_clause(cnf):
         # print(cnf)
         cnf = [x for x in cnf if u not in x] # remove SAT clauses from cnf array
         # remove UNSAT literal from clauses in cnf array
-    print(cnf)
     
     out = []
     for x in cnf:
