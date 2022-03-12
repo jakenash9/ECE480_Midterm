@@ -28,6 +28,7 @@ def main():
             for t in range(len(temp)):
                 temp[t]=int(temp[t])
             cnf.append(temp)
+    print(cnf)
     # print inputted cnf array 
     # print("CONJUNCTIVE NORMAL FORM ARRAY")
     # print("---------------------------------")
@@ -35,13 +36,16 @@ def main():
     # print("---------------------------------")
     # print()
     
-    if dpll(cnf) == True:
+    if dpll(cnf):
         print("SAT")
+        print("True Literals: " , true)
+        print("False Literals: " , false)
     else:
         print("UNSAT")
 
 # unit propagation clause - based on sudo code from DPLL Wikipedia
 def unit_clause(cnf):
+    print("UNITCLAUSE START")
     print(cnf)
     # define arrays
     units = [] # array of unit clauses
@@ -51,26 +55,47 @@ def unit_clause(cnf):
         # check if it is a unit clause and if so, add it to units array
         if len(x) == 1 and x[0]:
             units.append(x[0])
-    print(units, "asdfasdfasdf")
+    
+    print(units, "UNITS")
     for u in units: # each unit clause (standalone literal)
         # if unit literal is negative, add to neg and false arrays
         if u < 0: 
-            if u not in neg: neg.append(u)
-            if u not in false: false.append(u)
+            neg.append(u)
+            false.append(u)
         # if unit literal is positive, add to pos and true arrays
         else: 
-            if u not in pos: pos.append(u)
-            if u not in true: true.append(u)
-        cnf = [x for x in cnf if u not in x] # remove SAT clauses from cnf array
-        # remove UNSAT literal from clauses in cnf array
+            pos.append(u)
+            true.append(u)
+    for u in units:
         for x in cnf:
             if -u in x:
                 x.remove(-u)
-    return cnf, pos, neg # return cnf array, pos unit literal array, neg unit literal array
+    for u in units:
+        print(cnf)
+        cnf = [x for x in cnf if u not in x] # remove SAT clauses from cnf array
+        # remove UNSAT literal from clauses in cnf array
+    print(cnf)
+    
+    out = []
+    for x in cnf:
+        if x not in out:
+            out.append(x)
+
+    print(out)
+    print(pos)
+    print(neg)
+    print("UNITCLAUSE END")
+    return out, pos, neg # return cnf array, pos unit literal array, neg unit literal array
 
 # pure literal elimination method - based on sudo code from DPLL Wikipedia
 # checks to see if a literal appears as ALWAYS positive or ALWAYS negative
 def pure(cnf, pos, neg):
+    print("PURE LIT START")
+    print(cnf)
+    print(pos)
+    print(neg)
+    if len(cnf)==0:
+        return cnf, pos, neg
     # define positive and negative arrays after unit clauses removed
     positive = [] # positive literals 
     negative = [] # negative literals
@@ -97,16 +122,60 @@ def pure(cnf, pos, neg):
     temp = []
     for i in range(len(cnf)): # for each clause - range allows for us to edit the array in this loop
         for x in cnf[i]: # each literal
-            if x in pOnly+nOnly: # if literal only appears as positive or negative
+
+            if x in pOnly+pos or x in nOnly+neg: # if literal only appears as positive or negative
                 # add clauses with literals from pOnly or nOnly to temperary array
                 if cnf[i] not in temp: 
                     temp.append(cnf[i])
 
     cnf = [x for x in cnf if x not in temp] # remove SAT clauses from cnf array
     # return current cnf, positive satisifed literals, negative satisfied literals
+    print(cnf)
+    print(pos)
+    print(neg)
+    print("PURE LIT END")
     return cnf, pos+pOnly, neg+nOnly
 
-def dpll(cnf):
+def dpll(formula):
+    res = []
+    [res.append(x) for x in formula if x not in res]
+    formula = res
+    formula, new_true, new_false = unit_clause(formula)
+    formula, new_true, new_false = pure(formula, new_true, new_false)
+    if len(formula)==0:
+        return True
+    null = False
+    new_var = []
+    for x in formula:
+        if len(x)==0:
+            null = True
+        else:
+            for j in x:
+                if abs(j) not in new_var:
+                    new_var.append(abs(j))
+    new_var = sorted(new_var)
+    if null:
+        for i in new_true:
+            true.remove(i)
+        for i in new_false:
+            false.remove(i)
+        return False
+    pos = copy.deepcopy(formula)
+    neg = copy.deepcopy(formula)
+    pos.append([new_var[0]])
+    neg.append([-new_var[0]])
+    if dpll(pos):
+        return True
+    elif dpll(neg):
+        return True
+    else:
+        for i in new_true:
+            true.remove(i)
+        for i in new_false:
+            false.remove(i)
+        return False
+
+def dpll2(cnf):
     # send cnf array through unit propagation clause 
     cnf, pos, neg = unit_clause(cnf)
 
@@ -160,10 +229,8 @@ def dpll(cnf):
 
     # recursive call with new appended cnfs 
     if dpll(posCopy): # SATISFIABLE
-        print("TRUE, 2")
         return True
     elif dpll(negCopy): # UNSATISFIABLE
-        print("FALSE, 2")
         return False
     else: 
         # for each positive literal, remove from true array
@@ -172,7 +239,6 @@ def dpll(cnf):
         # for each negative literal, remove from false array 
         for i in neg:
                 false.remove(i)
-        print("FALSE, 3")
         return False # UNSATISFIABLE
 
 # main method run
