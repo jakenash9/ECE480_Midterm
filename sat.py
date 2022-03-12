@@ -4,7 +4,7 @@ import numpy as np
 
 def main():
     # read input from cnf.cnf
-    inFile = open("unsat1.cnf", "r")
+    inFile = open("out.cnf", "r")
     # Array of cnf lines
     allLines = inFile.readlines()
     # initializing variables
@@ -29,15 +29,13 @@ def main():
                 temp[t]=int(temp[t])
             cnf.append(temp)
     # print inputted cnf array 
-    print("CONJUNCTIVE NORMAL FORM ARRAY")
-    print("---------------------------------")
-    print(cnf) 
-    print("---------------------------------")
-    print()
-
-    satOut = dpll(cnf) # call dpll algorithm
-
-    if satOut == True:
+    # print("CONJUNCTIVE NORMAL FORM ARRAY")
+    # print("---------------------------------")
+    # print(cnf) 
+    # print("---------------------------------")
+    # print()
+    
+    if dpll(cnf) == True:
         print("SAT")
     else:
         print("UNSAT")
@@ -107,29 +105,32 @@ def pure(cnf, pos, neg):
     return cnf, pos+pOnly, neg+nOnly
 
 def dpll(cnf):
-
     # send cnf array through unit propagation clause 
     cnf, pos, neg = unit_clause(cnf)
 
-    # print cnf, positive unit literals, and negative unit literals after unit_clause
-    print("CNF (NO UNIT CLAUSES), POS UNIT CLAUSES, NEG UNIT CLAUSES")
-    print("---------------------------------")
-    print(cnf, pos, neg)
-    print("---------------------------------")
-    print()
+    # # print cnf, positive unit literals, and negative unit literals after unit_clause
+    # print("CNF (NO UNIT CLAUSES), POS UNIT CLAUSES, NEG UNIT CLAUSES")
+    # print("---------------------------------")
+    # print(cnf, pos, neg)
+    # print("---------------------------------")
+    # print()
 
-    # send cnf, pos, and neg arrays through pure literal elimination
+    # # send cnf, pos, and neg arrays through pure literal elimination
     cnf, pos, neg = pure(cnf, pos, neg)
 
-    # print cnf, positive satisfied literals, and negative satisfied literals after pure
-    print("CNF (NO PURE LITERALS), TRUE LITERALS, FALSE LITERALS")
-    print("---------------------------------")
-    print(cnf, true, false)
-    print("---------------------------------")
-    print()
+    # # print cnf, positive satisfied literals, and negative satisfied literals after pure
+    # print("CNF (NO PURE LITERALS), TRUE LITERALS, FALSE LITERALS")
+    # print("---------------------------------")
+    # print(cnf, true, false)
+    # print("---------------------------------")
+    # print()
 
     newLit = []
-    if len(cnf) == 0: return True # if cnf is empty return true (SAT)
+    if len(cnf) == 0: 
+        print(sorted(true),"ASDFAS")
+        print(sorted(false))
+        print("TRUE, 1")
+        return True # if cnf is empty return true (SAT)
     temp = False
     # if an empty clause is found set temp to True 
     for x in cnf:
@@ -149,6 +150,7 @@ def dpll(cnf):
         # remove all values in neg array from false array
         for i in neg:
             false.remove(i)
+        print("FALSE, 1")
         return False # return false (UNSAT)
 
     # allocate memory for two copies of current version of cnf array
@@ -160,16 +162,20 @@ def dpll(cnf):
 
     # recursive call with new appended cnfs 
     if dpll(posCopy): # SATISFIABLE
+        print("TRUE, 2")
         return True
     elif dpll(negCopy): # UNSATISFIABLE
+        print("FALSE, 2")
         return False
     else: 
         # for each positive literal, remove from true array
+        print(true, "ASDFASDFASDFASDFASDFASD")
         for i in np.unique(pos):
                 true.remove(i)
         # for each negative literal, remove from false array 
         for i in np.unique(neg):
                 false.remove(i)
+        print("FALSE, 3")
         return False # UNSATISFIABLE
 
 # main method run
