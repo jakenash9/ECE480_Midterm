@@ -42,14 +42,16 @@ def main():
 
 # unit propagation clause - based on sudo code from DPLL Wikipedia
 def unit_clause(cnf):
+    print(cnf)
     # define arrays
     units = [] # array of unit clauses
     pos = [] # array of positive literals
     neg = [] # array of negative literals
     for x in cnf: # each line in cnf.cnf
         # check if it is a unit clause and if so, add it to units array
-        if len(x) == 1:
+        if len(x) == 1 and x[0]:
             units.append(x[0])
+    print(units, "asdfasdfasdf")
     for u in units: # each unit clause (standalone literal)
         # if unit literal is negative, add to neg and false arrays
         if u < 0: 
@@ -126,10 +128,7 @@ def dpll(cnf):
     # print()
 
     newLit = []
-    if len(cnf) == 0: 
-        print(sorted(true),"ASDFAS")
-        print(sorted(false))
-        print("TRUE, 1")
+    if len(cnf) == 0:
         return True # if cnf is empty return true (SAT)
     temp = False
     # if an empty clause is found set temp to True 
@@ -150,7 +149,6 @@ def dpll(cnf):
         # remove all values in neg array from false array
         for i in neg:
             false.remove(i)
-        print("FALSE, 1")
         return False # return false (UNSAT)
 
     # allocate memory for two copies of current version of cnf array
@@ -169,11 +167,10 @@ def dpll(cnf):
         return False
     else: 
         # for each positive literal, remove from true array
-        print(true, "ASDFASDFASDFASDFASDFASD")
-        for i in np.unique(pos):
+        for i in pos:
                 true.remove(i)
         # for each negative literal, remove from false array 
-        for i in np.unique(neg):
+        for i in neg:
                 false.remove(i)
         print("FALSE, 3")
         return False # UNSATISFIABLE

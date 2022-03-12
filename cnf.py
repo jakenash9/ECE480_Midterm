@@ -34,15 +34,19 @@ def main():
     # print(output, "OUT")
     # print(output[0])
     # print(not_gate("~x4", "x5"))
+
+    # for each AND GATE
     for j in lits_array:
-        print(j)
+        # find 2 input AND gates from left to right
         while len(j)>1:
             k = j[0]+"."+j[1]
+            # call and_gate with first 2 literals left to right and append to output
             output.append(and_gate(k, "x" + str(counter)))
+            # remove first 2 literals from j after they are ANDed
             j.pop(0)
             j.pop(0)
-            j.insert(0,"x" + str(counter))
-            counter += 1
+            j.insert(0,"x" + str(counter)) # insert output of and_gate in place of the two inputs 
+            counter += 1 # increase highest literal count
 
     while len(lits_array)>1:
         k = lits_array[0][0]+"+"+lits_array[1][0]
