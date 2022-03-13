@@ -7,3 +7,8 @@ Process for running:
 2) Run the SAT solver code using:
 `python sat.py`
 
+Notes:
+- SOP input boolean function must use literals in the form of xA where A is the Ath number. 
+- First literal must start at x1... x0 cannot be used
+- AND gate: `.` OR gate: `+` NOT gate: `~`
+- If SAT, all combinations of inputs are stored in `output.txt `
