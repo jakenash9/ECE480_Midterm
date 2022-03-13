@@ -76,9 +76,9 @@ def main():
         outFile.write(x)
     outFile.close()
 
-    # EXAMPLE FOR NICK DELETE WHEN DONE!!!!!!!!!!!!!!!
-    temp = "~x1"
-    not_gate(temp, "x2")
+    # # EXAMPLE FOR NICK DELETE WHEN DONE!!!!!!!!!!!!!!!
+    # temp = "~x1"
+    # not_gate(temp, "x2")
 
 
 def var_count(f):
@@ -121,13 +121,13 @@ def or_gate(f,out):
 # NOT gate method based on NOT formula from lecture  
 def not_gate(f, out):
     func = f.split("~")
-    print()
-    print("NOT GATE EXAMPLE: f ='~x1' and out = 'x2'")
-    print(func)
-    print(func[1])
-    print(func[1][1:])
-    print("-" + func[1][1:] + " -" + out[1:] + " 0\n")
-    print(func[1][1:] + " " + out[1:] + " 0\n")
+    # print()
+    # print("NOT GATE EXAMPLE: f ='~x1' and out = 'x2'")
+    # print(func)
+    # print(func[1])
+    # print(func[1][1:])
+    # print("-" + func[1][1:] + " -" + out[1:] + " 0\n")
+    # print(func[1][1:] + " " + out[1:] + " 0\n")
     return "-" + func[1][1:] + " -" + out[1:] + " 0\n" + func[1][1:] + " " + out[1:] + " 0\n"
 
 if __name__ == "__main__":
