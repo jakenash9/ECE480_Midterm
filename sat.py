@@ -45,7 +45,7 @@ def main():
 
 
 def sat():
-    # read input from cnf.cnf
+    # read input from out.cnf
     inFile = open("out.cnf", "r")
     # Array of cnf lines
     allLines = inFile.readlines()

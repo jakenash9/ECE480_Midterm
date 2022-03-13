@@ -31,11 +31,9 @@ def main():
     print("NOT gates removed")
     print(lits_array)
     print("------------------------")
-    # print(output, "OUT")
-    # print(output[0])
-    # print(not_gate("~x4", "x5"))
+    
 
-    # for each AND GATE
+    # for each AND gate
     for j in lits_array:
         # find 2 input AND gates from left to right
         while len(j)>1:
@@ -48,22 +46,32 @@ def main():
             j.insert(0,"x" + str(counter)) # insert output of and_gate in place of the two inputs 
             counter += 1 # increase highest literal count
 
+    # for each OR gate
     while len(lits_array)>1:
-        k = lits_array[0][0]+"+"+lits_array[1][0]
-        output.append(or_gate(k, "x" + str(counter)))
+        k = lits_array[0][0]+"+"+lits_array[1][0] # combine first two literals into a new string
+        # call or_gate with first two literals left to right and append to output
+        output.append(or_gate(k, "x" + str(counter))) 
+        # remove first two literals from lits_array after they are ORed
         lits_array.pop(0)
         lits_array.pop(0)
-        lits_array.insert(0,["x" + str(counter)])
-        counter += 1
+        lits_array.insert(0,["x" + str(counter)]) # insert output of or_gate in place of two inputs
+        counter += 1 # increase highest literal count
+
+        # array now holds the highest single literal, representing the output of the entire function 
     
-    output.append(lits_array[0][0][1:]+" 0\n")
-    sec = [j.split("\n") for j in output]
-    clause_len = 0
+    
+    output.append(lits_array[0][0][1:]+" 0\n") # append highest literal to output array
+    sec = [j.split("\n") for j in output] # remove "\n" from array
+    clause_len = 0 # variable to hold number of clauses
+    # for each line in sec array
     for j in sec:
-        clause_len+=len(j)-1
+        clause_len+=len(j)-1 # number of lines in cnf file (clauses)
+    # insert cnf header into output file: p cnf {number of clauses} {output literal number}
     output.insert(0, "p cnf "+ str(clause_len) + " " + str(counter-1)+"\n")
     print(output)
-    outFile = open("out.cnf", "w")
+    outFile = open("out.cnf", "w") # create output file to write to
+
+    # for each element in the output array, write to cnf output file 
     for x in output:
         outFile.write(x)
     outFile.close()
@@ -98,15 +106,17 @@ def var_count(f):
 
   
 
-
+# AND gate method based on AND formula from lecture
 def and_gate(f,out):
     func = f.split(".")
     return func[0][1:]+" -"+out[1:]+" 0\n"+func[1][1:]+" -"+out[1:]+" 0\n"+"-"+func[0][1:]+" -"+func[1][1:]+" "+out[1:]+" 0\n"
 
+# OR gate method based on OR formula from lecture
 def or_gate(f,out):
     func = f.split("+")
     return "-" + func[0][1:] + " " + out[1:] + " 0\n" + "-" + func[1][1:] + " " + out[1:] + " 0\n" + func[0][1:] + " " + func[1][1:] + " -" + out[1:] + " 0\n"
-    
+
+# NOT gate method based on NOT formula from lecture  
 def not_gate(f, out):
     func = f.split("~")
     return "-" + func[1][1:] + " -" + out[1:] + " 0\n" + func[1][1:] + " " + out[1:] + " 0\n"
