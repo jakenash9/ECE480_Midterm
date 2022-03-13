@@ -45,6 +45,14 @@ def main():
 
 
 def sat():
+    
+    ################################################
+    # NOTE: to run test cases
+    # 1) make sat main
+    # 2) inFile = open("test_cases\{FILE NAME}", "r")
+    # 3) comment out 'return true, false' at the bottom of this method
+    ################################################
+
     # read input from out.cnf
     inFile = open("out.cnf", "r")
     # Array of cnf lines
@@ -83,7 +91,7 @@ def sat():
         print("True Literals: " , true)
         print("False Literals: " , false)
         print()
-        return true, false
+        return true, false # comment out to run test cnf test cases
     else:
         return False
 
@@ -161,8 +169,8 @@ def pure(cnf, pos, neg):
                     temp.append(cnf[i])
 
     cnf = [x for x in cnf if x not in temp] # remove SAT clauses from cnf array
-    # return current cnf, positive satisifed literals, negative satisfied literals
 
+    # return current cnf, positive satisifed literals, negative satisfied literals
     return cnf, pos+pOnly, neg+nOnly
 
 def dpll(cnf):
@@ -237,3 +245,4 @@ def dpll(cnf):
 # main method run
 if __name__ == "__main__":
     main()
+    # sat() # for running cnf test cases
