@@ -221,7 +221,7 @@ def dpll(cnf):
         for i in neg:
             false.remove(i)
         return False # return false (UNSAT)
-    # allocate memory for two copies of current version of cnf array
+    # two copies of current version of cnf array
     posCopy = copy.deepcopy(cnf)
     negCopy = copy.deepcopy(cnf)
     # add lowest value of newLit to copies of current version of cnf (+ and -)
@@ -231,7 +231,7 @@ def dpll(cnf):
     # recursive call with new appended cnfs 
     if dpll(posCopy): # SATISFIABLE
         return True
-    elif dpll(negCopy): # UNSATISFIABLE
+    elif dpll(negCopy): # SATISFIABLE
         return True
     else: 
         # for each positive literal, remove from true array
